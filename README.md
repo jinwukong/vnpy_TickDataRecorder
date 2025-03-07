@@ -18,9 +18,6 @@
    - 在解析TickData的过程中，推送给 BarGenerator 用于 1 分钟K线合成（或其他周期）。  
    - 最终结果以 DataFrame 形式保存到内存，并可导出 csv 文件。
 
-4. **第三方数据对比**  
-   - 演示使用 `datacompy` 将本地录制数据与其他数据源（如 RQData）对比，自动输出差异报告。
-
 ---
 
 ## 目录结构
@@ -31,8 +28,6 @@
   读取 txt 文件中的原始字符串，拆分并还原为 vnpy 标准 `TickData`。
 - **transform_tick_data.py**  
   合并与处理 TickData，使用 `BarGenerator` 合成 K 线，最终写出 csv。
-- **compare_with_rqdata.py**  
-  演示对比本地录制数据与第三方（如 RQData）数据的差异。
 
 ---
 
@@ -61,12 +56,6 @@
   - 在合成完成的回调 `on_bar` 中，使用 pandas DataFrame 记录 Bar 数据，并最终保存为 csv。
 - 输出的 csv 格式与 vnpy 中常见的字段一致，包括 open_price、high_price、low_price、close_price、volume、turnover 等。
 
-### 4. 对比第三方数据
-
-- 在 `compare_with_rqdata.py` 中，使用 `datacompy.Compare` 来对比两份 csv（本地 vs 第三方数据）。  
-- 如果想行号对应比对，可以以索引为依据；如果想以交易时间或其他字段为主键比对，也可以灵活修改代码。  
-- 比对结果会显示相同、不一致、缺失等情况，帮助检验本地录制数据的完整性与正确性。
-
 ---
 
 ## 源码定制思路
@@ -82,9 +71,6 @@
 3. **K线合成**  
    - 我在 `transform_tick_data.py` 中演示了与 `BarGenerator` 的集成。  
    - 通过自行实现 `on_bar` 回调，把合成出来的 BarData 存到 DataFrame，再输出 csv。
-
-4. **数据比对**  
-   - 对于需要校验行情质量或比照其他供应商（例如 RQData、Wind、通联数据等），我提供了 `datacompy` 的示例用法；也可以使用 pandas 自带的合并/对比逻辑。
 
 ---
 
